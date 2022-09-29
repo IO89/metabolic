@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import './App.css';
+import { BubbleMap } from './BubbleMap';
+
 
 
 function App() {
@@ -9,7 +11,7 @@ function App() {
 
   useEffect(() => {
     // TODO: connect to server
-    socket.current = io('0.0.0.0:5000');
+    socket.current = io('0.0.0.0:4000');
     socket.current.emit('we are connected')
 
 
@@ -31,6 +33,7 @@ function App() {
   return (
     <div className="App">
       Visualize data
+      <BubbleMap />
     </div>
   );
 }
