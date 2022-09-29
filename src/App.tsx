@@ -1,8 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import Ticker, { NewsTicker } from 'nice-react-ticker';
+
 import './App.css';
 import { BubbleMap } from './BubbleMap';
 
+
+const mockMetabolicAge = [
+  {
+  title: 'Metabolic score 8.6',
+  emoji: '😁',
+  time: "11-01-22"
+},
+  {
+    title:'Metabolic score 9.6',
+    emoji: '😁',
+    time: "11-01-22"
+  }
+]
 
 
 function App() {
@@ -33,6 +48,12 @@ function App() {
   return (
     <div className="App">
       Visualize data
+      <>
+        <Ticker   isNewsTicker={true} >
+          {mockMetabolicAge.map(
+            (m,i) => <NewsTicker id={i} title={`${m.title} ${m.emoji}`} meta={m.time} url='' /> )}
+          </Ticker>
+        </>
       <BubbleMap />
     </div>
   );
