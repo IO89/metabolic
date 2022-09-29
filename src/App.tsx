@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useRef, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
 import './App.css';
 
+
 function App() {
+  const socket = useRef<null | Socket>(null);
+  const [data, setData] = useState()
+
+  useEffect(() => {
+    // TODO: connect to server
+    socket.current = io('0.0.0.0:5000');
+    socket.current.emit('we are connected')
+
+
+    return () => {
+      socket.current?.emit('disconnected')
+      socket.current?.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket.current) return;
+
+    socket.current?.on('received-data', (data) => {
+      const updatedData = JSON.parse(data);
+      setData(updatedData);
+    });
+  }, [data]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      Visualize data
     </div>
   );
 }
